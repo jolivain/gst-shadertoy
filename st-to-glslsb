@@ -1,8 +1,9 @@
 #! /bin/bash
 #
-# This script convert some shaders from Shadertoy to the GLSL Sandbox
-# API. This is only working with Shadertoy shaders that are only using
-# image code (mainImage()), using no texture at all.
+# This script convert some shaders from Shadertoy to the gst-glshader
+# filter API. This is only working with Shadertoy shaders that are
+# only using image code (mainImage()), using only one texture in
+# iChannel0.
 #
 
 # Print header
@@ -20,23 +21,24 @@ cat <<END_OF_HEADER
 precision mediump float;
 #endif
 
-// glslsandbox uniforms
+// gst-glshader uniforms
 uniform float time;
-uniform vec2 mouse;
-uniform vec2 resolution;
-uniform vec4 date;
+uniform float width;
+uniform float height;
+uniform sampler2D tex;
 
 // shadertoy globals
-vec3  iResolution;
-float iGlobalTime;
-vec3  iMouse;
-vec4  iDate;
+float iGlobalTime = 0.0;
+vec3  iResolution = vec3(0.0);
+vec3  iMouse = vec3(0.0);
+vec4  iDate = vec4(0.0);
 
-// Protect glslsandbox uniform names
-#define time        stemu_time
-#define resolution  stemu_resolution
-#define mouse       stemu_mouse
-#define date        stemu_date
+#define iChannel0 tex
+
+// Protect gst-glshader names
+#define time        gstemu_time
+#define width       gstemu_width
+#define height      gstemu_height
 
 // --------[ Original ShaderToy begins here ]---------- //
 END_OF_HEADER
@@ -49,16 +51,14 @@ cat <<END_OF_FOOTER
 // --------[ Original ShaderToy ends here ]---------- //
 
 #undef time
-#undef resolution
-#undef mouse
-#undef date
+#undef width
+#undef height
 
 void main(void)
 {
-  iResolution = vec3(resolution, 0.0);
+  iResolution = vec3(width, height, 0.0);
   iGlobalTime = time;
-  iMouse = vec3(mouse * resolution, 0.0);
-  iDate = date;
+  iDate.w = time;
 
   mainImage(gl_FragColor, gl_FragCoord.xy);
 }
