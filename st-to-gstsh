@@ -12,7 +12,7 @@ if [ -n "${SHADERTOY_ID}" ] ; then
     echo " * Original shader from: https://www.shadertoy.com/view/${SHADERTOY_ID}"
     echo " *"
 fi
-echo " * Automatically converted by st-to-glslsb script"
+echo " * Automatically converted by st-to-gstsh script"
 echo " */"
 echo
 

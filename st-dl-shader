@@ -12,7 +12,7 @@ BASENAME="$(dirname "$0")"
 SHADER="$1"
 
 DL_ORIG_SHADER="${BASENAME}/st-dl-orig-shader"
-GLSLSBEMU="${BASENAME}/st-to-glslsb"
+GLSLSBEMU="${BASENAME}/st-to-gstsh"
 
 SHADERTOY_ID="$(sed -r 's@^https?://(www\.)?shadertoy\.com/view/@@' <<< "$SHADER")"
 export SHADERTOY_ID
