@@ -1,0 +1,65 @@
+#! /bin/bash
+#
+# This script convert some shaders from Shadertoy to the GLSL Sandbox
+# API. This is only working with Shadertoy shaders that are only using
+# image code (mainImage()), using no texture at all.
+#
+
+# Print header
+echo "/*"
+if [ -n "${SHADERTOY_ID}" ] ; then
+    echo " * Original shader from: https://www.shadertoy.com/view/${SHADERTOY_ID}"
+    echo " *"
+fi
+echo " * Automatically converted by st-to-glslsb script"
+echo " */"
+echo
+
+cat <<END_OF_HEADER
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+// glslsandbox uniforms
+uniform float time;
+uniform vec2 mouse;
+uniform vec2 resolution;
+uniform vec4 date;
+
+// shadertoy globals
+vec3  iResolution;
+float iGlobalTime;
+vec3  iMouse;
+vec4  iDate;
+
+// Protect glslsandbox uniform names
+#define time        stemu_time
+#define resolution  stemu_resolution
+#define mouse       stemu_mouse
+#define date        stemu_date
+
+// --------[ Original ShaderToy begins here ]---------- //
+END_OF_HEADER
+
+# Just pass through the Shadertoy code...
+cat
+
+# Then print the footer
+cat <<END_OF_FOOTER
+// --------[ Original ShaderToy ends here ]---------- //
+
+#undef time
+#undef resolution
+#undef mouse
+#undef date
+
+void main(void)
+{
+  iResolution = vec3(resolution, 0.0);
+  iGlobalTime = time;
+  iMouse = vec3(mouse * resolution, 0.0);
+  iDate = date;
+
+  mainImage(gl_FragColor, gl_FragCoord.xy);
+}
+END_OF_FOOTER

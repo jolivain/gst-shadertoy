@@ -1,0 +1,23 @@
+#! /bin/bash
+
+set -e
+set -u
+
+if [[ $# -ne 1 ]] ; then
+    echo "Usage: $0 <shadertoy-id-or-url>" >&2
+    exit 1
+fi
+
+BASENAME="$(dirname "$0")"
+SHADER="$1"
+
+DL_ORIG_SHADER="${BASENAME}/st-dl-orig-shader"
+GLSLSBEMU="${BASENAME}/st-to-glslsb"
+
+SHADERTOY_ID="$(sed -r 's@^https?://(www\.)?shadertoy\.com/view/@@' <<< "$SHADER")"
+export SHADERTOY_ID
+
+"${DL_ORIG_SHADER}" "${SHADERTOY_ID}" | "${GLSLSBEMU}"
+
+# Do not flood shadertoy.com in case of a long list of download
+sleep 0.5

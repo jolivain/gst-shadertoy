@@ -1,0 +1,28 @@
+#! /bin/bash
+
+set -e
+set -u
+
+if [[ $# -ne 1 ]] ; then
+    echo "Usage: $0 <shadertoy-id-or-url>" >&2
+    exit 1
+fi
+
+BASENAME="$(dirname "$0")"
+SHADER_ID="$(sed -r 's@^https?://(www\.)?shadertoy\.com/view/@@' <<< "$1")"
+
+CURL="curl"
+JSON2FRAG="${BASENAME}/st-json2code"
+REFERER_PREFIX="https://www.shadertoy.com/view"
+USER_AGENT="shadertoy-player/1.0"
+SHADERTOY_POST_URL="https://www.shadertoy.com/shadertoy"
+
+POST_DATA="s={ \"shaders\" : [\"${SHADER_ID}\"] }"
+REFERER="${REFERER_PREFIX}/${SHADER_ID}"
+
+${CURL} \
+    --silent \
+    --user-agent "${USER_AGENT}" \
+    --header "Referer: ${REFERER}" \
+    --data-urlencode "${POST_DATA}" \
+    "${SHADERTOY_POST_URL}" | "${JSON2FRAG}" 
