@@ -16,4 +16,4 @@ exec gst-launch-1.0 -v \
   glupload ! \
   glcolorconvert ! \
   glshader vertex="\"$(cat myshader.vs)\"" fragment="\"$(cat "$SHADER_FILE" | sed 's/\"/\\"/g' )\""  ! \
-  glimagesink
+  glimagesinkelement
