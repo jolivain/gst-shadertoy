@@ -13,7 +13,6 @@ SHADER_FILE="$2"
 exec gst-launch-1.0 -v \
   filesrc location="${VIDEO_FILE}" ! \
   decodebin ! \
-  videoscale ! 'video/x-raw,width=64,height=48' ! \
   glupload ! \
   glcolorconvert ! \
   glshader vertex="\"$(cat myshader.vs)\"" fragment="\"$(cat "$SHADER_FILE" | sed 's/\"/\\"/g' )\""  ! \
