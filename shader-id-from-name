@@ -1,0 +1,10 @@
+#! /bin/sh
+
+set -e
+set -u
+
+SHADER_LIST="$1"
+SHADER_NAME="$2"
+
+grep -vE '^[[:blank:]]*(#|$)' "${SHADER_LIST}" |
+    awk '$2 == "'"${SHADER_NAME}"'" { print $1; }'
