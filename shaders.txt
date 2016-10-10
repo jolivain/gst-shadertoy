@@ -1,3 +1,6 @@
+# First column:  ShaderToy ID
+# Second Column: Friendly file name
+
 XsVSW1 Fisheye
 MlBSWW SimpleSobel
 MtXXRf ngMir7
