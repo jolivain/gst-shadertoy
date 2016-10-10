@@ -1,0 +1,78 @@
+gst-shadertoy
+=============
+
+
+Introduction
+------------
+
+gst-shadertoy is a set of scripts for reusing ShaderToy webcam shaders
+in a GStreamer pipeline.  This package does not include any GStreamer
+plugin, it's only few scripts to download and convert ShaderToy
+shaders, and then create a pipeline with already existing elements,
+using gst-launch-1.0.
+
+This package does not include or redistributes any shader.  Instead,
+shaders will downloaded from the user request.  Please pay attention
+to license and author credits while playing with those scripts.
+
+ShaderToy WebCam shaders:
+https://www.shadertoy.com/results?filter=webcam
+
+GStreamer glshader element:
+https://cgit.freedesktop.org/gstreamer/gst-plugins-bad/tree/ext/gl
+https://cgit.freedesktop.org/gstreamer/gst-plugins-bad/tree/ext/gl/gstglfiltershader.c
+
+
+Quick Demonstration
+-------------------
+
+Step 1: Make sure you have all required dependencies.  For example, on
+a Fedora system:
+
+    sudo dnf install \
+        make curl \
+        gstreamer1 \
+        gstreamer1-plugins-base \
+        gstreamer1-plugins-good \
+        gstreamer1-plugins-bad-free
+
+Step 2: Download Shaders
+
+    make -j4
+
+Step 3: Run a Shader on your WebCam, for example:
+
+    ./gst-shadertoy-cam.sh Drunk.fs
+
+Step 4: Run a Shader on a movie, for example:
+
+Download a movie, for example "Big Buck Bunny" from:
+https://peach.blender.org/download/
+
+    ./gst-shadertoy-file.sh movie.mp4 Glitch.fs
+
+
+Notes
+-----
+
+There is a slight difference on glshader element properties before
+GStreamer 1.8.0 and after.  Earlier version takes a shader file path.
+Later version takes the shader content directly from the command line.
+gst-shadertoy-cam.sh and gst-shadertoy-file.sh will detect your
+version and try to execute the best pipeline.
+
+Please note that depending on your GPU and driver, this GStreamer
+pipeline could be very resource demanding.  Video size can be reduce
+by adding the following elements before the "glupload":
+
+    videoscale ! 'video/x-raw,width=128,height=96,framerate=30/1' ! \
+
+Adjust dimensions and framerate to your needs.
+
+Note also that "glimagesink" window may not always start every time on
+some systems.
+
+Those gst-shadertoy scripts are distributed under the 2 clause BSD
+license. See the LICENSE file for details.
+
+Julien Olivain <juju@cotds.org>
