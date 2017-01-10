@@ -72,6 +72,19 @@ Adjust dimensions and framerate to your needs.
 Note also that "glimagesink" window may not always start every time on
 some systems.
 
+Moreover a random runtime error can be encountered, with a message:
+
+[xcb] Unknown request in queue while dequeuing
+[xcb] Most likely this is a multi-threaded client and XInitThreads has not been called
+[xcb] Aborting, sorry about that.
+gst-launch-1.0: xcb_io.c:165: dequeue_pending_request: Assertion `!xcb_xlib_unknown_req_in_deq' failed.
+
+This can be worked around by exporting the variable:
+    export GST_GL_XINITTHREADS=1
+
+See for example:
+https://bugzilla.gnome.org/show_bug.cgi?id=754198
+
 Those gst-shadertoy scripts are distributed under the 2 clause BSD
 license. See the LICENSE file for details.
 
