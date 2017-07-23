@@ -34,6 +34,7 @@ vec3  iMouse = vec3(0.0);
 vec4  iDate = vec4(0.0);
 
 #define iChannel0 tex
+#define texture(t,c) texture2D(t,c)
 
 // Protect gst-glshader names
 #define time        gstemu_time
