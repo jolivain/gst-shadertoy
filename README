@@ -19,8 +19,8 @@ ShaderToy WebCam shaders:
 https://www.shadertoy.com/results?filter=webcam
 
 GStreamer glshader element:
-https://cgit.freedesktop.org/gstreamer/gst-plugins-bad/tree/ext/gl
-https://cgit.freedesktop.org/gstreamer/gst-plugins-bad/tree/ext/gl/gstglfiltershader.c
+https://cgit.freedesktop.org/gstreamer/gst-plugins-base/tree/ext/gl?h=1.14.1
+https://cgit.freedesktop.org/gstreamer/gst-plugins-base/tree/ext/gl/gstglfiltershader.c?h=1.14.1
 
 
 Quick Demonstration
